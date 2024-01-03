@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btnRandomizeAll" type="id"/>
+    <item name= "llBookColorImages" type="id"/>
+    <item name= "imgBlue" type="id"/>
+    <item name= "imgRed" type="id"/>
+    <item name= "imgGreen" type="id"/>
+    <item name= "imgYellow" type="id"/>
+    <item name= "imgPurple" type="id"/>
+    <item name= "imgOrange" type="id"/>
+</resources>
