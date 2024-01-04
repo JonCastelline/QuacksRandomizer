@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuacksRandomizer</string>
+    <string name="app_name">Quacks Randomizer</string>
     <string name="randomize_all">Randomize All</string>
     <string name="lock_colors">Lock Colors</string>
     <string name="select_colors">Select Colors</string>
