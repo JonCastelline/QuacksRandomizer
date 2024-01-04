@@ -8,4 +8,7 @@
     <item name= "imgYellow" type="id"/>
     <item name= "imgPurple" type="id"/>
     <item name= "imgOrange" type="id"/>
+    <item name= "imgBlack" type="id"/>
+    <item name= "btnLockColors" type="id"/>
+    <item name= "btnSelectColors" type="id"/>
 </resources>

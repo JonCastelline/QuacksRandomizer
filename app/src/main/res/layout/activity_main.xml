@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/quacksbackground">
 
     <Spinner
         android:id="@+id/spinnerPlayers"
@@ -13,7 +14,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:background="?attr/colorButtonNormal" />
 
     <!-- Randomize All Button -->
     <Button
@@ -26,6 +28,27 @@
         android:layout_below="@id/spinnerPlayers"
         />
 
+    <!-- Lock Colors Button -->
+    <Button
+        android:id="@+id/btnLockColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/lock_colors"
+        android:layout_below="@id/btnRandomizeAll"
+        android:layout_marginTop="16dp"
+        android:onClick="onLockColorsButtonClick"
+        />
+
+    <Button
+        android:id="@+id/btnSelectColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_colors"
+        android:layout_below="@id/btnRandomizeAll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +60,6 @@
             android:id="@+id/llBookColorImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnRandomizeAll"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
@@ -55,7 +77,6 @@
                 android:layout_gravity="center"
                 android:visibility="gone" /> <!-- Set initial visibility to gone -->
 
-            <!-- Add an ImageView for each book color -->
             <ImageView
                 android:id="@+id/imgBlue"
                 android:layout_width="wrap_content"

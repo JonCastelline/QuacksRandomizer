@@ -1,6 +1,5 @@
 package com.example.quacksrandomizer
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -9,11 +8,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quacksrandomizer.data.BookColor
 import com.example.quacksrandomizer.data.BookColorRepository
-import java.io.IOException
-import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         // Get references to UI elements
         val btnRandomizeAll: Button = findViewById(R.id.btnRandomizeAll)
-        val llBookColorImages: LinearLayout = findViewById(R.id.llBookColorImages)
 
         // Initialize the visibility of all ImageViews to GONE
 
@@ -70,11 +67,16 @@ class MainActivity : AppCompatActivity() {
             // Randomize and display book colors
             displayBookColors(allColors)
         }
+
+        val btnSelectColors: Button = findViewById(R.id.btnSelectColors)
+        btnSelectColors.setOnClickListener {
+            showColorSelectionDialog()
+        }
     }
     private fun displayBookColors(bookColors: List<BookColor>) {
         // Randomize each book color and display the corresponding image
         for (color in bookColors) {
-            val randomOption = color.getRandomOption()
+            val optionToDisplay = color.selectedOption ?: color.getRandomOption()
             val imageId = if (color.name == "Black") {
                 if (selectedPlayers >= 3) {
                     color.getImageResourceId(1) // Use black2.png for 3 or more players
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     color.getImageResourceId(0) // Use black1.png for 2 players
                 }
             } else {
-                color.getImageResourceId(randomOption)
+                color.getImageResourceId(optionToDisplay)
             }
             // Find the corresponding ImageView based on the color
             val imageViewId = resources.getIdentifier("img${color.name}", "id", packageName)
@@ -99,5 +101,54 @@ class MainActivity : AppCompatActivity() {
                 imageView.visibility = View.VISIBLE
             }
         }
+    }
+
+    fun onLockColorsButtonClick() {
+        val colors = BookColorRepository.getAllColors().filter { it.name != "Orange" && it.name != "Black" }
+        val colorNames = colors.map { it.name }.toTypedArray()
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Colors to Lock")
+            .setMultiChoiceItems(colorNames, null) { dialog, which, isChecked ->
+                // Handle the user's selection (if needed)
+            }
+            .setPositiveButton("OK") { dialog, which ->
+                // Handle the OK button click
+                val selectedColors = colors.filterIndexed { index, _ ->
+                    (dialog as AlertDialog).listView.isItemChecked(index)
+                }
+                // Handle the selected colors
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        builder.show()
+    }
+
+    private fun showColorSelectionDialog() {
+        val colors = BookColorRepository.getAllColors()
+        val colorNames = colors.map { it.name }.toTypedArray()
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select a Color")
+            .setItems(colorNames) { _, which ->
+                val selectedColor = colors[which]
+                showOptionSelectionDialog(selectedColor)
+            }
+
+        builder.create().show()
+    }
+
+    private fun showOptionSelectionDialog(selectedColor: BookColor) {
+        val options = selectedColor.options.toTypedArray()
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select an Option")
+            .setItems(options) { _, which ->
+                // Store the selected option for later use
+                selectedColor.selectedOption = which
+            }
+
+        builder.create().show()
     }
 }

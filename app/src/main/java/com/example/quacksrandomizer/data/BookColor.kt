@@ -5,7 +5,8 @@ import com.example.quacksrandomizer.R
 data class BookColor(
     val name: String,
     val options: List<String>,
-    val imageResourceIds: List<Int>
+    val imageResourceIds: List<Int>,
+    var selectedOption: Int? = null
 ) {
     fun getRandomOption(): Int {
         return (imageResourceIds.indices).random()
