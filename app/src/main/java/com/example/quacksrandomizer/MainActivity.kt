@@ -16,6 +16,7 @@ import com.example.quacksrandomizer.data.BookColorRepository
 class MainActivity : AppCompatActivity() {
 
     private var selectedPlayers = 2 // Default to 2 players
+    private var blackBookImageResourceId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,20 @@ class MainActivity : AppCompatActivity() {
                 id: Long
             ) {
                 selectedPlayers = position + 2 // +2 because the array starts from 0 and represents 2, 3, 4 players
+
+                // Store the black book image resource ID based on player count
+                val imgBlack: ImageView = findViewById(R.id.imgBlack)
+                // Check if the black ImageView is currently visible
+                val isBlackVisible = imgBlack.visibility == View.VISIBLE
+                blackBookImageResourceId = if (selectedPlayers >= 3) {
+                    BookColorRepository.getColorByName("Black")?.getImageResourceId(1) ?: 0
+                } else {
+                    BookColorRepository.getColorByName("Black")?.getImageResourceId(0) ?: 0
+                }
+                // If the black ImageView is already visible, update its displayed image
+                if (isBlackVisible) {
+                    imgBlack.setImageResource(blackBookImageResourceId)
+                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
@@ -78,11 +93,7 @@ class MainActivity : AppCompatActivity() {
         for (color in bookColors) {
             val optionToDisplay = color.selectedOption ?: color.getRandomOption()
             val imageId = if (color.name == "Black") {
-                if (selectedPlayers >= 3) {
-                    color.getImageResourceId(1) // Use black2.png for 3 or more players
-                } else {
-                    color.getImageResourceId(0) // Use black1.png for 2 players
-                }
+                blackBookImageResourceId
             } else {
                 color.getImageResourceId(optionToDisplay)
             }

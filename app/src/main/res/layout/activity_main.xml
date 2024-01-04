@@ -7,52 +7,46 @@
     tools:context=".MainActivity"
     android:background="@drawable/quacksbackground">
 
-    <Spinner
-        android:id="@+id/spinnerPlayers"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llTopRow"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/colorButtonNormal" />
-
-    <!-- Randomize All Button -->
-    <Button
-        android:id="@+id/btnRandomizeAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/randomize_all"
-        android:layout_below="@id/spinnerPlayers"
-        />
+        android:layout_marginTop="16dp">
 
-    <!-- Lock Colors Button -->
-    <Button
-        android:id="@+id/btnLockColors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/lock_colors"
-        android:layout_below="@id/btnRandomizeAll"
-        android:layout_marginTop="16dp"
-        android:onClick="onLockColorsButtonClick"
-        />
+        <!-- Spinner -->
+        <Spinner
+            android:id="@+id/spinnerPlayers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/colorButtonNormal" />
 
-    <Button
-        android:id="@+id/btnSelectColors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_colors"
-        android:layout_below="@id/btnRandomizeAll"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        <!-- Randomize All Button -->
+        <Button
+            android:id="@+id/btnRandomizeAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/randomize_all" />
 
+        <!-- Select Colors Button -->
+        <Button
+            android:id="@+id/btnSelectColors"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/select_colors" />
+
+    </LinearLayout>
+
+    <!-- ScrollView for Book Color Images -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnRandomizeAll"
+        android:layout_below="@id/llTopRow"
         android:layout_marginTop="16dp">
 
         <!-- ImageViews for each book color -->
@@ -60,6 +54,7 @@
             android:id="@+id/llBookColorImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/btnRandomizeAll"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 

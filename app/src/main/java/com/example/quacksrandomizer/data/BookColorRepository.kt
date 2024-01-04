@@ -6,6 +6,18 @@ object BookColorRepository {
     fun getAllColors(): List<BookColor> {
         return listOf(blue, red, green, yellow, purple, orange, black)
     }
+    fun getColorByName(name: String): BookColor? {
+        return when (name) {
+            "Blue" -> blue
+            "Red" -> red
+            "Green" -> green
+            "Yellow" -> yellow
+            "Purple" -> purple
+            "Orange" -> orange
+            "Black" -> black
+            else -> null
+        }
+    }
     private val blue = BookColor("Blue",
         listOf("Crow Skull 1", "Crow Skull 2", "Crow Skull 3", "Crow Skull 4"),
         listOf(R.drawable.blue1, R.drawable.blue2, R.drawable.blue3, R.drawable.blue4))
