@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.quacksrandomizer.data.BookColor
 import com.example.quacksrandomizer.data.BookColorRepository
 
@@ -158,6 +159,13 @@ class MainActivity : AppCompatActivity() {
             .setItems(options) { _, which ->
                 // Store the selected option for later use
                 selectedColor.selectedOption = which
+
+                val imageViewId = resources.getIdentifier("img${selectedColor.name}", "id", packageName)
+                val imageView: ImageView = findViewById(imageViewId)
+                if (imageView.isVisible) {
+                    val imageResourceId = selectedColor.getImageResourceId(which)
+                    imageView.setImageResource(imageResourceId)
+                }
             }
 
         builder.create().show()
