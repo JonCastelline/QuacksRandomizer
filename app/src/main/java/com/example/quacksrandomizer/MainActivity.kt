@@ -205,15 +205,38 @@ class MainActivity : AppCompatActivity() {
             options.add("Clear Selection")
         }
 
+        val adapter = object : ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_list_item_1,
+            options
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent) as TextView
+
+                if (position == selectedColor.selectedOption) {
+                    // Apply your styling for the selected option
+                    view.setTypeface(null, Typeface.BOLD)
+                    view.setTextColor(ContextCompat.getColor(context, selectedColor.getColorResId()))
+                } else {
+                    // Apply your default styling for other options
+                    view.setTypeface(null, Typeface.NORMAL)
+                    view.setTextColor(resources.getColor(R.color.defaultColor, null))
+                }
+
+                return view
+            }
+        }
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select an Option")
-            .setItems(options.toTypedArray()) { _, which ->
+            .setAdapter(adapter) { _, which ->
 
                 if (which < selectedColor.options.size) {
                     // Store the selected option for later use
                     selectedColor.selectedOption = which
 
-                    val imageViewId = resources.getIdentifier("img${selectedColor.name}", "id", packageName)
+                    val imageViewId =
+                        resources.getIdentifier("img${selectedColor.name}", "id", packageName)
                     val imageView: ImageView = findViewById(imageViewId)
                     if (imageView.isVisible) {
                         val imageResourceId = selectedColor.getImageResourceId(which)
@@ -229,4 +252,6 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(R.color.lightGrayBackground)
     }
+
+
 }
