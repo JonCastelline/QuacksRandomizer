@@ -145,20 +145,31 @@ class MainActivity : AppCompatActivity() {
         // Filter out Orange and Black
         val filteredColors = colors.filter { it.name !in listOf("Orange", "Black") }
 
-        val adapter = object : ArrayAdapter<BookColor>(
+        // Check if any color has a selected option
+        val hasSelectedOption = filteredColors.any { it.selectedOption != null }
+
+        // Create a list of color names
+        val colorNames = filteredColors.map { it.name }.toMutableList()
+
+        // Add "Clear All" option if at least one color has a selected option
+        if (hasSelectedOption) {
+            colorNames.add("Clear All")
+        }
+
+        val adapter = object : ArrayAdapter<String>(
             this,
             android.R.layout.simple_list_item_1,
-            filteredColors
+            colorNames
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent) as TextView
-                val color = getItem(position)
+                val colorName = getItem(position)
 
-                // Check if selectedOption is not null and matches the current color
-                if (color?.selectedOption != null) {
+                // Check if the color has a selected option
+                if (colorName != null && filteredColors.any { it.name == colorName && it.selectedOption != null }) {
                     // Apply bold and color to the text
                     view.setTypeface(null, Typeface.BOLD)
-                    view.setTextColor(ContextCompat.getColor(context, color.getColorResId()))
+                    view.setTextColor(ContextCompat.getColor(context, filteredColors.first { it.name == colorName }.getColorResId()))
                 } else {
                     // Reset styles for other items
                     view.setTypeface(null, Typeface.NORMAL)
@@ -172,8 +183,15 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select a Color")
             .setAdapter(adapter) { _, which ->
-                val selectedColor = filteredColors[which]
-                showOptionSelectionDialog(selectedColor)
+                if (which < filteredColors.size) {
+                    val selectedColor = filteredColors[which]
+                    showOptionSelectionDialog(selectedColor)
+                } else {
+                    // "Clear All" option selected, clear all selected options
+                    filteredColors.forEach { it.selectedOption = null }
+                    // Notify the adapter that the data has changed
+                    adapter.notifyDataSetChanged()
+                }
             }
 
         val dialog = builder.create()
