@@ -8,12 +8,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.quacksrandomizer.data.BookColor
@@ -73,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         val btnRandomizeAll: Button = findViewById(R.id.btnRandomizeAll)
 
         // Initialize the visibility of all ImageViews to GONE
-
         for (bookColor in BookColorRepository.getAllColors()) {
             val imageViewId = resources.getIdentifier("img${bookColor.name}", "id", packageName)
             val imageView: ImageView = findViewById(imageViewId)
