@@ -1,15 +1,20 @@
 package com.example.quacksrandomizer
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.quacksrandomizer.data.BookColor
 import com.example.quacksrandomizer.data.BookColorRepository
@@ -139,35 +144,74 @@ class MainActivity : AppCompatActivity() {
 
     private fun showColorSelectionDialog() {
         val colors = BookColorRepository.getAllColors()
-        val colorNames = colors.map { it.name }.toTypedArray()
+
+        // Filter out Orange and Black
+        val filteredColors = colors.filter { it.name !in listOf("Orange", "Black") }
+
+        val adapter = object : ArrayAdapter<BookColor>(
+            this,
+            android.R.layout.simple_list_item_1,
+            filteredColors
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent) as TextView
+                val color = getItem(position)
+
+                // Check if selectedOption is not null and matches the current color
+                if (color?.selectedOption != null) {
+                    // Apply bold and color to the text
+                    view.setTypeface(null, Typeface.BOLD)
+                    view.setTextColor(ContextCompat.getColor(context, color.getColorResId()))
+                } else {
+                    // Reset styles for other items
+                    view.setTypeface(null, Typeface.NORMAL)
+                    view.setTextColor(resources.getColor(R.color.defaultColor, null))
+                }
+
+                return view
+            }
+        }
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select a Color")
-            .setItems(colorNames) { _, which ->
-                val selectedColor = colors[which]
+            .setAdapter(adapter) { _, which ->
+                val selectedColor = filteredColors[which]
                 showOptionSelectionDialog(selectedColor)
             }
 
-        builder.create().show()
+        val dialog = builder.create()
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.color.lightGrayBackground)
     }
 
     private fun showOptionSelectionDialog(selectedColor: BookColor) {
-        val options = selectedColor.options.toTypedArray()
+        val options = selectedColor.options.toMutableList()
+        if (selectedColor.selectedOption != null) {
+            options.add("Clear Selection")
+        }
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select an Option")
-            .setItems(options) { _, which ->
-                // Store the selected option for later use
-                selectedColor.selectedOption = which
+            .setItems(options.toTypedArray()) { _, which ->
 
-                val imageViewId = resources.getIdentifier("img${selectedColor.name}", "id", packageName)
-                val imageView: ImageView = findViewById(imageViewId)
-                if (imageView.isVisible) {
-                    val imageResourceId = selectedColor.getImageResourceId(which)
-                    imageView.setImageResource(imageResourceId)
+                if (which < selectedColor.options.size) {
+                    // Store the selected option for later use
+                    selectedColor.selectedOption = which
+
+                    val imageViewId = resources.getIdentifier("img${selectedColor.name}", "id", packageName)
+                    val imageView: ImageView = findViewById(imageViewId)
+                    if (imageView.isVisible) {
+                        val imageResourceId = selectedColor.getImageResourceId(which)
+                        imageView.setImageResource(imageResourceId)
+                    }
+                } else {
+                    // Clear the selected option
+                    selectedColor.selectedOption = null
                 }
             }
 
-        builder.create().show()
+        val dialog = builder.create()
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.color.lightGrayBackground)
     }
 }

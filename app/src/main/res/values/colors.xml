@@ -16,4 +16,13 @@
     <color name="colorBackground">#F5F5F5</color> <!-- Light Grayish Background -->
     <color name="colorText">#212121</color> <!-- Dark Text Color -->
     <color name="colorAccentDark">#FFA000</color> <!-- Darker Shade of Amber/Yellow -->
+    <color name="blueColor">#FF0000FF</color> <!-- Blue -->
+    <color name="redColor">#FFFF0000</color> <!-- Red -->
+    <color name="greenColor">#FF00FF00</color> <!-- Green -->
+    <color name="yellowColor">#FFFFFF00</color> <!-- Yellow -->
+    <color name="purpleColor">#FF800080</color> <!-- Purple -->
+    <color name="orangeColor">#FFFFA500</color> <!-- Orange -->
+    <color name="blackColor">#FF000000</color> <!-- Black -->
+    <color name="defaultColor">#FF000000</color> <!-- Black -->
+    <color name="lightGrayBackground">#F5F5F5</color> <!-- Light Grayish Background -->
 </resources>

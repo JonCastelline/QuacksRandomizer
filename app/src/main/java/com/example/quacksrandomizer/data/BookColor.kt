@@ -19,4 +19,21 @@ data class BookColor(
             R.drawable.unabletofind
         }
     }
+
+    fun getColorResId(): Int {
+        return when (name) {
+            "Blue" -> R.color.blueColor
+            "Red" -> R.color.redColor
+            "Green" -> R.color.greenColor
+            "Yellow" -> R.color.yellowColor
+            "Purple" -> R.color.purpleColor
+            "Orange" -> R.color.orangeColor
+            "Black" -> R.color.blackColor
+            else -> R.color.defaultColor
+        }
+    }
+
+    override fun toString(): String {
+        return name
+    }
 }
